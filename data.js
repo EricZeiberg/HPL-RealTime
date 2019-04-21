@@ -30,39 +30,45 @@ function initGraph() {
         cfb = XLSX.read(bstr, {
             type: 'binary'
         });
-        console.log(cfb);
+      //  console.log(cfb);
         var sheetRange = cfb.Sheets[cfb.SheetNames[0]];
         range = XLSX.utils.decode_range(sheetRange['!ref']);
         graph();
 
     }
     oReq.send();
-    chart = new CanvasJS.Chart("chartContainer", {
 
-        data: [{
-            type: "line",
-
-            dataPoints: data
-
-        }]
-    });
 }
 
 function graph() {
 
 
-    for (let rowNum = 1; rowNum <= range.e.r; rowNum++) {
+    for (let rowNum = 1; rowNum <= range.e.r  + 1; rowNum++) {
 
         var object = {};
         object["x"] = cfb["Sheets"]["Sheet1"]["A" + rowNum].v
 
         object["y"] = cfb["Sheets"]["Sheet1"]["B" + rowNum].v
-        console.log(object)
-        data.push(object);
+        //console.log(object)
+        chart.options.data[0].dataPoints.push(object);
 
     }
 
-
     chart.render();
+
 }
+
+chart = new CanvasJS.Chart("chartContainer", {
+
+    data: [{
+        type: "line",
+        dataPoints: []
+
+    }]
+});
 initGraph();
+window.setInterval(function() {
+        chart.options.data[0].dataPoints = []
+        initGraph();
+    }, 2000);
+//chart.render();
