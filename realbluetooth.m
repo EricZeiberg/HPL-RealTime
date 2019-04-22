@@ -8,7 +8,7 @@ a3 = animatedline('Color',[0 0 1]); %establishes animated for accel z  data
 legend('Accel_x','Accel_y','Accel_z')  %generates the legend of the accelerometer data
 
 outInc = 1;
-while j<3000
+while j<10000
     out=fscanf(s);
     disp(out);
 %     remout=[];
@@ -26,11 +26,15 @@ while j<3000
 %         ACCY=Data(j,2);
 %         ACCZ=Data(j,3);
 
-    Data(j,1) = str2double(out);
+    %Data(j,1) = str2double(out);
     if mod(j, 18) == 0 
+        try
          T = table(j, str2double(out));
          writetable(T, 'data.xlsx', 'Sheet', 1, 'Range', ['A' num2str(outInc)], 'WriteVariableNames', false);
          outInc = outInc + 1;
+        catch
+            warning('Tried to write and read from file at same time. Skipping data point');
+        end
     end
 %     remout=rem(j,3);
 %     if remout==1
