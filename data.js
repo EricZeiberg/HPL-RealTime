@@ -58,6 +58,10 @@ function graph() {
 
 }
 
+function updateImage() {
+  document.getElementById("AR_Image").src = "image.png?" + new Date().getTime();
+}
+
 chart = new CanvasJS.Chart("chartContainer", {
 
     data: [{
@@ -71,4 +75,6 @@ window.setInterval(function() {
         chart.options.data[0].dataPoints = []
         initGraph();
     }, 2000);
-//chart.render();
+window.setInterval(function() {
+        updateImage();
+    }, 5000);
